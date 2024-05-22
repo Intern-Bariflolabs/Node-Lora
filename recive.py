@@ -66,12 +66,12 @@ def recive():
         # Print received message and counter in serial
         print(f"{message}  {counter}")
 
-        message_list = message.split("/")
+        # message_list = message.split("/")
 
-        redis_server.set("current_r",message_list[0] if message_list[0] != None else 0)
-        redis_server.set("current_y",message_list[1]if message_list[1] != None else 0)
-        redis_server.set("current_b",message_list[2] if message_list[2] != None else 0)
-        redis_server.set("counter",counter if counter != None else 0)
+        # redis_server.set("current_r",message_list[0] if message_list[0] != None else 0)
+        # redis_server.set("current_y",message_list[1]if message_list[1] != None else 0)
+        # redis_server.set("current_b",message_list[2] if message_list[2] != None else 0)
+        # redis_server.set("counter",counter if counter != None else 0)
 
         # Print packet/signal status including RSSI, SNR, and signalRSSI
         print("Packet status: RSSI = {0:0.2f} dBm | SNR = {1:0.2f} dB".format(LoRa.packetRssi(), LoRa.snr()))

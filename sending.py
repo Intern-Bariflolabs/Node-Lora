@@ -47,7 +47,7 @@ LoRa.setSyncWord(0x34)
 print("\n-- LoRa Transmitter --\n")
 
 # Message to transmit
-message = current.get_current()
+message = "Hello Bariflo"
 messageList = list(message)
 for i in range(len(messageList)) : messageList[i] = ord(messageList[i])
 counter = 0
