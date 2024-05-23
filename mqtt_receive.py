@@ -8,8 +8,11 @@ ssid = 'BarifloLabs'
 password = 'Bfl_wifi0@1234'
 
 # MQTT broker information
-mqtt_server = '4.240.114.7'  # Replace with your broker's IP address
-client_id = 'ESP32B'
+mqtt_server = '4.240.114.7'
+mqtt_port = 1883
+mqtt_username = 'BarifloLabs'
+mqtt_password = 'Bfl@123'
+client_id = 'ESP32A'
 topic = 'test/topic'
 
 def connect_to_wifi():
@@ -27,9 +30,10 @@ def connect_to_wifi():
 
 def message_callback(topic, msg):
     print(f'Received message from topic {topic.decode()}: {msg.decode()}')
+    # Add your message processing logic here
 
 def connect_and_subscribe():
-    client = MQTTClient(client_id, mqtt_server, port=1883)
+    client = MQTTClient(client_id, mqtt_server, user=mqtt_username, password=mqtt_password, port=mqtt_port)
     
     try:
         client.connect()
@@ -60,4 +64,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
