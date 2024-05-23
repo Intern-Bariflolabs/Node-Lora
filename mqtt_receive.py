@@ -30,7 +30,6 @@ def connect_to_wifi():
 
 def message_callback(topic, msg):
     print(f'Received message from topic {topic.decode()}: {msg.decode()}')
-    # Add your message processing logic here
 
 def connect_and_subscribe():
     client = MQTTClient(client_id, mqtt_server, user=mqtt_username, password=mqtt_password, port=mqtt_port)
@@ -48,7 +47,7 @@ def connect_and_subscribe():
     
     try:
         while True:
-            client.check_msg()  # Non-blocking method to check for new messages
+            client.check_msg()
             time.sleep(1)
     except OSError as e:
         print('Subscription failed:', e)
@@ -60,7 +59,6 @@ def main():
     while True:
         connect_and_subscribe()
         time.sleep(10)
-        machine.reset()  # Reset and try again
-
+        
 if __name__ == '__main__':
     main()
