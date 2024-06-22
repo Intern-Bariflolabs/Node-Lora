@@ -26,6 +26,8 @@ byte destination = 0xA34;
 long lastSendTime = 0;
 int interval = 2000;
 
+char lastReceivedStatus = '\0'; // Variable to store the last received status
+
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html>
@@ -66,7 +68,7 @@ void loadCredentials() {
   if (ap_ssid[0] == 0 || ap_password[0] == 0 || node_id[0] == 0 || subscribe_id[0] == 0) {
     strcpy(ap_ssid, "NodeMCU");
     strcpy(ap_password, "12345678");
-    strcpy(node_id, "0x70");
+    strcpy(node_id, "0x72");
     strcpy(subscribe_id, "26773439927218");
   }
 }
@@ -125,7 +127,7 @@ void setup() {
 void loop() {
   if (millis() - lastSendTime > interval) {
     int randomValue = random(18, 21);
-    String message = String(randomValue) ;
+    String message = String(randomValue);
     sendMessage(message);
     Serial.println("Sending " + message);
     lastSendTime = millis();
@@ -183,12 +185,12 @@ void onReceive(int packetSize) {
     char status = incoming.charAt(delimiterPos + 1);
 
     if (receivedID.equals(subscribe_id)) {
-      if (status == '1') {
+      if (status == '1' && lastReceivedStatus != '1') {
         Serial.println("True");
-      } else if (status == '0') {
+        lastReceivedStatus = '1';
+      } else if (status == '0' && lastReceivedStatus != '0') {
         Serial.println("False");
-      } else {
-        Serial.println("Invalid status");
+        lastReceivedStatus = '0';
       }
     } else {
       Serial.println("Subscribed message is not for me.");
