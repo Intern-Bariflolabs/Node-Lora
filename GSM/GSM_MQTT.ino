@@ -1,5 +1,6 @@
 #define TINY_GSM_MODEM_BG96
-
+#include<WiFiUdp.h>
+#include<NTPClient.h>
 #include <TinyGsmClient.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
@@ -18,7 +19,8 @@
 TinyGsm modem(Serial2);
 TinyGsmClient client(modem);
 PubSubClient mqtt(client);
-
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", 19800); 
 // Your GPRS credentials
 const char apn[] = "airtelgprs.com";
 const char gprsUser[] = "";
@@ -65,6 +67,20 @@ boolean mqttConnect(int port) {
   mqtt.publish(topic_pub, "{\"status\":\"connected\"}");
   mqtt.subscribe(topic_sub);
   return mqtt.connected();
+}
+String getFormattedTime() {
+  unsigned long epochTime = timeClient.getEpochTime();
+  struct tm* ptm = gmtime((time_t*)&epochTime);
+  int year = ptm->tm_year + 1900;
+  int month = ptm->tm_mon + 1;
+  int day = ptm->tm_mday;
+  int hour = ptm->tm_hour;
+  int minute = ptm->tm_min;
+  int second = ptm->tm_sec;
+
+  char formattedTime[20];
+  sprintf(formattedTime, "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
+  return String(formattedTime);
 }
 
 void setup() {
@@ -201,9 +217,9 @@ void loop() {
     static unsigned long lastPublish = 0;
     if (millis() - lastPublish > 10000) {
       lastPublish = millis();
-
+      String formattedTime = getFormattedTime();
       StaticJsonDocument<200> doc;
-      doc["dataPoint"] = millis();
+      doc["dataPoint"] = formattedTime;
       doc["paramType"] = "cpu_temp";
       doc["paramValue"] = random(19, 21);
       doc["deviceId"] = "26773439927218";
