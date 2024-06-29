@@ -9,3 +9,6 @@ route -n
 # check for successful internet connection , we have to perform a ping test
 ping google.com 
 # if ping test is successful then the internet connection is successful 
+# cloning the git repository lora_dev_v2
+git clone [https://github.com/satyajit2024/lora_dev_v2.git] ---> link of the git repository 
+# gsm modem connection 
