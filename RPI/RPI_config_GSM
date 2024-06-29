@@ -1,0 +1,11 @@
+# Configure the Internet in the network manager 
+sudo raspi-config 
+# in which we will have the internet connection to wifi
+# check the internet connection 
+ifconfig wlan0
+# Then we have to see the gateway ip 
+route -n 
+# in which we will get the gateway ip 
+# check for successful internet connection , we have to perform a ping test
+ping google.com 
+# if ping test is successful then the internet connection is successful 
