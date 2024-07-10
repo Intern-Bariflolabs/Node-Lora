@@ -1,0 +1,9 @@
+sudo apt update   // to update 
+sudo apt upgrade  // to upgrade 
+sudo apt install -y python3-picamera2 // to install picamera2
+
+sudo raspi-config // go to the interface option --> camera --> if enanble then disable it --> reboot it 
+
+nano image_capture.py // write the python script provided
+
+python3 image_capture.py // it will capture the image successfully
